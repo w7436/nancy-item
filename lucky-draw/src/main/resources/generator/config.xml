@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<!--配置生成器-->
+<generatorConfiguration>
+
+<!--引入配置资源-->
+    <properties resource="application.properties" />
+
+<!--    一个数据库一个context,defaultModelType:大数据字段，不分表-->
+    <context id="Mysql" targetRuntime="MyBatis3" defaultModelType="flat">
+
+<!--指定生成的java文件的编码，没有生成到项目时中文可能乱码-->
+        <property name="javaFileEncoding" value="UTF-8"/>
+
+        <!--配置是否使用通用 Mapper 自带的注释扩展，默认 true-->
+<!--         <property name="useMapperCommentGenerator" value="false"/>-->
+        <plugin type="tool.DefaultGeneratorPlugin">
+            <property name="rootMappers" value="nancy.base.BaseMapper" />
+            <property name="lombok" value="Getter,Setter,ToString"/>
+        </plugin>
+
+<!--       实现类的全路径-->
+        <commentGenerator type="tool.DefaultCommentGenerator" />
+
+<!--        数据库驱动 用户名 密码 -->
+        <jdbcConnection driverClass="${spring.datasource.driver-class-name}"
+                        connectionURL="${spring.datasource.url}"
+                        userId="${spring.datasource.username}"
+                        password="${spring.datasource.password}">
+            <property name="useInformationSchema" value="true" />
+        </jdbcConnection>
+
+        <!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，
+                为 true时把JDBC DECIMAL 和 NUMERIC 类型解析为java.math.BigDecimal -->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!--MyBatis 生成器只需要生成 Model-->
+        <javaModelGenerator targetProject="C:\A-source\bit\github\nancy-Java\lucky-draw\src\test\java"
+                            targetPackage="nancy.model">
+<!--            此属性可用于为所有生成的Java模型对象指定根类-->
+            <property name="rootClass" value="nancy.base.BaseEntity"/>
+        </javaModelGenerator>
+
+        <!--mybatis 的xml文件地址-->
+        <sqlMapGenerator targetProject="C:\A-source\bit\github\nancy-Java\lucky-draw\src\test\resources"
+                         targetPackage="mapper">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!--mybatis的mapper接口-->
+        <javaClientGenerator type="XMLMAPPER"
+                             targetProject="C:\A-source\bit\github\nancy-Java\lucky-draw\src\test\java"
+                             targetPackage="nancy.mapper">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!-- 需要生成的表，%表示模糊匹配，也可以指定具体的表名 -->
+        <table tableName="%"
+               enableCountByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               enableUpdateByExample="false"
+        >
+            <!-- insert方法通过自增主键插入数据后，主键值是否设置到对象属性中 -->
+            <!--            <generatedKey column="id" sqlStatement="JDBC"/>-->
+            <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+        </table>
+        <!--        <table tableName="user">-->
+        <!--            <generatedKey column="id" sqlStatement="Mysql" identity="true" />-->
+        <!--        </table>-->
+    </context>
+</generatorConfiguration>
