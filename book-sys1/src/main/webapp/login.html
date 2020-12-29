@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户登录</title>
+</head>
+<body>
+
+<form action="user/login">
+    用户名：<input type="text" name="username" placeholder="请输入名户名">
+    <br>
+    密码：<input type="password" name="password" placeholder="请输入密码">
+    <br>
+    <input type="submit" value="提交">
+</form>
+<br>
+<br>
+
+<form id="ajax_form">
+    用户名：<input type="text" name="username" placeholder="请输入名户名">
+    <br>
+    密码：<input type="password" name="password" placeholder="请输入密码">
+    <br>
+    <input type="submit" value="提交">
+</form>
+<script src="static/jquery@3.3.1/jquery.min.js"></script>
+<script>
+    //页面元素加载以及渲染完成事件
+    $(function(){
+        //id为ajax_form的页面元素绑定一个事件：submit提交时间
+        $("#ajax_form").submit(function () {
+            //JS对象
+            let data = {
+                username:"username",
+                password:"password",
+            }
+            $.ajax({
+                url:"user/login2",
+                type:"post",
+                contentType:"application/json",//请求的数据格式
+                data:JSON.stringify(data),//发送的请求数据，将JS对象转化为JSON字符串
+                dataType:"json",//响应的数据格式
+                success:function (r) {//r代表响应 的数据
+                    alert(JSON.stringify(r))
+                },error:function (jq) {
+                    alert("状态码："+jq.status+",错误消息："+jq.statusText)
+                }
+            })
+            return false;//不使用表单默认的提交放方式
+        })
+    });
+</script>
+</body>
+</html>
